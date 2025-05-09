@@ -1,0 +1,15 @@
+header {
+    padding: 20px;
+    text-align: center;
+}
+
+.logoHome {
+    width: 35px;
+    height: auto;
+}
+
+.header img, header h1 {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
