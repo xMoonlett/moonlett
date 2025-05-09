@@ -60,9 +60,10 @@ header p {
 
 /* Game banner */
 .game-banner {
-  width: 100%;
+  width: 107%;
   height: 100px;
   object-fit: fill;
+  border-top: 2px solid #ff6fff;
   border-bottom: 2px solid #ff6fff;
 }
 
@@ -71,7 +72,7 @@ header p {
   height: 60px;
   width: 60px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
+  border: 2px solid #ff6fff;
   margin-top: 10px;
 }
 
