@@ -1,0 +1,32 @@
+/* screens.css */
+
+.ui-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(30, 30, 30, 0.95);
+  padding: 20px;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.ui-screen h1 {
+  margin-bottom: 10px;
+}
+
+.ui-screen button {
+  padding: 10px 20px;
+  background-color: #444;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.ui-screen button:hover {
+  background-color: #666;
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <title>PixAnomaly - Playing</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ui.css">
+    <link rel="stylesheet" href="css/boot.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/game-over.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/achievements.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/levels.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="/" class="logo">
+        <img src="/images/moonlettlogo.png" alt="Moonlett" class="logoimg" />
+      </a>
+    </div>
+
+    <div class="nav-center">
+      <ul class="main-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/games/PixAnomaly/index.html">PixAnomaly</a></li>
+        <li><a href="/games/games.html">Games</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-right">
+      <ul class="main-links">
+        <li><a href="/news">News</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+    <!-- Game Area -->
+    <div id="game-area">
+        <div id="player">
+            <div id="gun"></div>
+        </div>
+        <div id="enemy">
+           <div id="enemy-gun"></div>
+        </div>
+    </div>
+
+    <div id="hud" class="hud">
+        <div id="health-container">
+            <span id="health-label">Health: </span>
+            <span id="health-percentage">100%</span>
+        </div>
+        <div id="bullet-count">Bullets: 30 | Mags: 3</div>
+    </div>
+
+    <div id="leaderboard" class="leaderboard hidden">
+        <h2>Leaderboard</h2>
+        <table id="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <span>Kills: 0</span> | <span>Deaths: 0</span>
+                    <div id="score">Score: 0</div>
+                    <div id="rounds">
+                        <span>Rounds Won: 0</span> | <span>Rounds Lost: 0</span>
+                    </div>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <!-- Leaderboard entries will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Game Menu -->
+    <div id="gameMenu" class="gameMenu hidden">
+        <h1>Game Menu</h1>
+        <button id="MainMenu-button">Back to Main Menu</button>
+        <button id="Achievements-button">Achievements</button>
+        <button id="Controls-button">Controls</button>
+        <button id="Settings-button">Settings</button>
+    </div>
+
+    <div class="button-container">
+        <button id="GameMenu-button" class="GameMenu-button">Menu</button>
+        <button id="pause-button" class="pause-button">Pause</button>
+    </div>
+    
+    <!-- Pause Screens -->
+    <section id="pause-screen" class="ui-screen hidden">
+        <h1>Paused</h1>
+        <button id="resume-button">Resume</button>
+        <button id="restart-button">Restart</button>
+    </section>
+
+    <!-- Controls Menu -->
+    <section id="controls-screen" class="ui-screen hidden">
+        <h1>Controls</h1>
+        <button id="close-controls-button">Close</button>
+        <ul id="controls-list">
+            <li>WASD - Move</li>
+            <li>Esc - Pause</li>
+        </ul>
+    </section>
+
+    <!-- Game Over Screen and more -->
+    <div id="game-over-screen" class="hidden">
+        <h1>Game Over</h1>
+        <p id="final-score">Score: 0</p>
+        
+        <button id="MainMenu-button">Back to Main Menu</button>
+        <button onclick="location.reload()">Restart</button>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+          <p class="footer-text">&copy; 2025 Pixanomaly. All Pixels Corrupted.</p>
+          <ul class="footer-links">
+            <li><a href="/about">About</a></li>
+          </ul>
+        </div>
+    </footer> 
+
+    <script src="js/main.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="./levels/level1.js"></script>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const mapName = params.get("map") || "demoMap"; // default fallback
+      
+        const script = document.createElement("script");
+        script.src = `/maps/${mapName}.js`; // loads demoMap.js, etc
+        document.body.appendChild(script);
+    </script>      
+
+</body>
+
+</html>

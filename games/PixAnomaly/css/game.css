@@ -1,0 +1,368 @@
+#game-area {
+  position: relative; /* Ensure child elements like .hud are positioned relative to this */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1200px; /* Map width */
+  height: 805px; /* Map height */
+  overflow: hidden; /* Prevent content from spilling out */
+  border-right: 2px solid #ff6fff;
+  border-left: 2px solid #ff6fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow for better visibility */
+}
+
+body {
+  cursor: default; /* Default cursor when outside the game area */
+}
+
+/* === Player === */
+#player {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(to bottom, #f0f0f0, #ccc);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  bottom: 100px;
+  left: 100px;
+  z-index: 2;
+  transform-origin: center center;
+  border: 2px solid #000;
+  border-radius: 4px;
+}
+
+.player {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: blue; /* Player is blue */
+  border: 2px solid #000;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.ctPlayer {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: blue;
+  border: 2px solid #000;
+  border-radius: 4px;
+  z-index: 2;
+}
+.tPlayer {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: red;
+  border: 2px solid #000;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* === Gun === */
+#gun {
+  position: absolute;
+  width: 15px;
+  height: 10px;
+  background: linear-gradient(to right, #999, #666);
+  border: 1px solid #444;
+  left: 40px;
+  top: 20px;
+  transform-origin: left center;
+}
+
+.bullet {
+  position: absolute;
+  width: 2px;
+  height: 4px;
+  background: #ff6fff;
+  border-style: dashed;
+  border-top: 2px solid #ff6fff;
+  border-bottom: 2px solid #ff6fff; 
+}
+
+/* === Walls === */
+.wall {
+  position: absolute;
+  width: 50px;
+  height: 20px;
+  background: repeating-linear-gradient(
+    45deg,
+    #8b4513,
+    #8b4513 10px,
+    #5a2d0c 10px,
+    #5a2d0c 20px
+  );
+  border: 2px solid #5a2d0c; /* Darker border for depth */
+  box-shadow: inset 0 0 8px #5a2d0c, 0 0 5px #000; /* Add shadow for realism */
+  border-radius: 2px;
+  z-index: 1;
+}
+
+/* === Trees === */
+.tree {
+  position: absolute;
+  width: 40px;
+  height: 60px;
+  background: linear-gradient(to bottom, #2e8b57, #006400);
+  border-radius: 50% 50% 20% 20%;
+  box-shadow:
+    0 0 4px #003300,
+    inset 0 -4px 4px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+.tree::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  background: #4d2c10;
+  bottom: -10px;
+  left: 15px;
+  border-radius: 2px;
+  box-shadow: inset 0 0 3px #2a1405;
+  z-index: 0;
+  border-top: 2px solid #4d2c10; /* Add a top border for the tree trunk */
+}
+
+/* === Water === */
+.water {
+  position: absolute;
+  background: linear-gradient(to bottom, #1e90ff, #1874cd);
+  border: 1px solid #0a2c5d;
+  border: 2px solid rgba(16, 78, 139, 0.9); /* Strong outline */
+  outline: 1px solid rgba(255, 255, 255, 0.05); /* Light halo */
+  box-shadow:
+    0 0 4px #1e90ff,
+    inset 0 0 5px #104e8b;
+  box-shadow: inset 0 0 8px rgba(0, 64, 128, 0.3), 0 0 6px rgba(0, 64, 128, 0.2);
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Bubbles layer */
+.water::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.2) 2px, transparent 4px),
+                    radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.1) 3px, transparent 5px),
+                    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15) 2px, transparent 4px),
+                    radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.2) 3px, transparent 5px);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  animation: bubbleFlow 6s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.3;
+}
+
+/* Bubbles slowly drift up */
+@keyframes bubbleFlow {
+  0% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+
+
+/* === Enemy === */
+.enemy {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: red; /* Enemy is red */
+  border: 2px solid #000;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.enemy {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, #ff0000, #8b0000);
+  border: 2px solid #000;
+  border-radius: 50%;
+  animation: enemy-move 2s infinite; /* Add movement animation */
+  z-index: 2; /* Ensure it's above the ground */
+}
+/* === Enemy Movement Animation === */
+@keyframes enemy-move {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(10px, -10px) rotate(5deg); /* Move up and to the right */
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg); /* Return to original position */
+  }
+}
+
+/* === Enemy Gun === */
+.enemy-gun {
+  position: absolute;
+  width: 20px;
+  height: 5px;
+  background: #ff0000; /* Red color for enemy guns */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%) rotate(0deg); /* Center and rotate */
+  transform-origin: left center; /* Rotate from the left center */
+  border-radius: 2px;
+  z-index: 2; /* Ensure it's above the enemy body */
+}
+
+/* === Enemy Bullets === */
+.enemy-bullet {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: yellow;
+  border-radius: 50%;
+  z-index: 3;
+  box-shadow: 0 0 5px yellow;
+}
+
+#bullet-count {
+  font-size: 14px;
+}
+
+/* === Decoration === */
+.decoration {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: #00ff00;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+/* HUD */
+.hud {
+  position: absolute;
+  top: 75px; /* Place the HUD near the top of the game area */
+  left: 50%;
+  transform: translateX(-50%); /* Center the HUD horizontally */
+  width: 50%;; /* Adjust width to fit inside the game area */
+  height: 40px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #ff6fff;
+  padding: 10px;
+  color: #fff;
+  display: flex;
+  z-index: 100; /* Ensure the HUD is above other elements */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  font-family: 'Press Start 2P', monospace; /* Use the same font as the taskbar */
+  font-size: 14px; /* Adjust font size for better readability */
+  text-align: center; /* Center the text inside the HUD */
+  justify-items: center; /* Center the items inside the HUD */
+  align-items: center; /* Center the items inside the HUD */
+  flex-direction: row;
+  gap: 25px;
+}
+
+/* === Health Bar === */
+/* Player Health Bar */
+#health-container {
+width: 150px;
+}
+
+#health-bar {
+height: 100%;
+background: #f00;
+width: 100%;
+border: 1px solid #000;
+border-radius: 5px;
+}
+
+/* Enemy Health Bar */
+.enemy-health {
+position: absolute;
+width: 40px;
+height: 5px;
+background: #f00;
+top: -10px;
+left: 0;
+border: 1px solid #000;
+z-index: 5;
+}
+
+/* === Rocks === */
+.rock {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, #808080, #606060);
+  border-radius: 50%; /* Rounded shape */
+  box-shadow: inset 0 0 5px #606060, 0 0 5px #000; /* Add depth */
+  z-index: 0;
+  transform: rotate(calc(var(--rand-rot, 0) * 1deg));
+}
+
+/* === Bushes === */
+.bush {
+  position: absolute;
+  width: 40px;
+  height: 25px;
+  background: radial-gradient(circle, #006400, #004d00);
+  border-radius: 50%; /* Rounded shape */
+  box-shadow: 0 0 10px #004d00; /* Glow effect for bushes */
+  z-index: 1;
+  transform: rotate(calc(var(--rand-rot, 0) * 1deg)); /* Random rotation */
+  filter: blur(1px); /* Slight blur for depth */
+}
+.bush::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #004d00, #003300);
+  border-radius: 50%;
+  opacity: 0.5; /* Semi-transparent for depth */
+}
+
+/* === Houses === */
+.house {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: #8b0000; /* Red color for the house */
+  border: 2px solid #5a2d0c; /* Darker border for depth */
+  box-shadow: inset 0 0 8px #5a2d0c, 0 0 5px #000; /* Add shadow for realism */
+  z-index: 1;
+}
+
+/* === Paths === */
+.path {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: #d2b48c; /* Tan color for the path */
+  border: 1px solid #a0522d; /* Darker border for depth */
+  box-shadow: inset 0 0 4px #a0522d, 0 0 2px #000; /* Add shadow for realism */
+  z-index: 0;
+}
+
+.ct-spawn::after {
+  content: "CT";
+  color: cyan;
+  font-size: 10px;
+  position: absolute;
+  top: -15px;
+  left: 0;
+}
+
+.t-spawn::after {
+  content: "T";
+  color: orange;
+  font-size: 10px;
+  position: absolute;
+  top: -15px;
+  left: 0;
+}
