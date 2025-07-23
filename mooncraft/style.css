@@ -1,0 +1,147 @@
+/* General Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: #ddd;
+    color: #222;
+}
+
+body a {
+    color: #ca6fff
+}
+
+.logo {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 2.2em;
+    letter-spacing: 2px;
+    font-family: cursive;
+    font-weight: bold;
+    color: #ca6fff;
+    text-shadow: 0 2px 8px #222;
+}
+.logo img {
+    position: absolute;
+    top: 15px;
+    left: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 50px;
+    height: 50px;
+}
+
+/* Header Styles */
+header {
+    position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.status {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.container a {
+    text-decoration: none;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    color: black;
+    background: #ddd;
+}
+
+/* Navigation Bar Styles */
+nav ul {
+    padding: 0;
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+nav ul li a:hover {
+    color: #000000ad;
+}
+
+/* Section Styles */
+section {
+    padding: 20px;
+    margin: 0 20px;
+    background: black;
+    border-bottom: 1px solid #ddd;
+    color: #fff;
+}
+
+.button {
+    display: inline-block;
+    background: #ffba26;
+    color: #222;
+    padding: 0.5em 1.2em;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.button:hover {
+    background: #ffd366;
+    color: #000;
+}
+
+.events ul {
+    background: #222;
+    border-radius: 8px;
+    padding: 10px;
+    list-style: none;
+    color: #ffe;
+}
+
+blockquote {
+    background: #222;
+    border-left: 6px solid #ffba26;
+    margin: 1em 0;
+    padding: 0.8em 1.2em;
+    border-radius: 8px;
+    color: #ffd;
+    font-style: italic;
+}
+blockquote span {
+    font-style: normal;
+    font-size: 0.9em;
+    color: #aaa;
+    display: block;
+    margin-top: 8px;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: #fff;
+}

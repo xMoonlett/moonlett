@@ -1,0 +1,73 @@
+nav {
+    user-select: none;
+    position: fixed;
+    text-align: center;
+    background-color: #00000065;
+    border: #CF9FFF 1px solid;
+    border-radius: 9%;
+    width: fit-content;
+    top: 35px;
+    font-size: medium;
+    padding: 5px;
+    -webkit-border-radius: 9%;
+    -moz-border-radius: 9%;
+    -ms-border-radius: 9%;
+    -o-border-radius: 9%;
+    z-index: 999;
+    text-wrap: nowrap;
+
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+}
+
+nav a {
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #CF9FFF;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    text-decoration: #a36eff dotted underline;
+    text-align: center;
+}
+
+a:hover {
+    cursor: url('/images/cursor-hover.png') 0 0, auto;
+}
+
+.gradient-text a {
+    background: linear-gradient(to right, #9090ff, #a36eff, #ff9aff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    z-index: 999;
+}
+.gradient-text a:hover {
+    background: linear-gradient(to right, #ff9aff, #a36eff, #9090ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    cursor: url('/images/cursor-hover.png') 0 0, auto;
+}
