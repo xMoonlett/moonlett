@@ -8,6 +8,10 @@ body {
     color: #222;
 }
 
+html, body, * {
+    cursor: url('/images/cursor.png'), auto;
+}
+
 body a {
     color: #ca6fff
 }
