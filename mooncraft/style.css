@@ -16,9 +16,6 @@ body a {
     color: #ca6fff;
     cursor: pointer;
 }
-body a {
-    cursor: url('/images/cursor-hover.png'), auto;
-}
 
 .logo {
     display: inline-block;
@@ -67,7 +64,10 @@ header h1 {
 
 .container a {
     text-decoration: none;
-    cursor: pointer;
+}
+
+.container a:hover {
+    cursor: url('/images/cursor-hover.png'), auto;
 }
 
 .nav {
@@ -94,10 +94,10 @@ nav ul li a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
-    cursor: pointer;
 }
 nav ul li a:hover {
     color: #000000ad;
+    cursor: url('/images/cursor-hover.png'), auto;
 }
 
 /* Section Styles */
@@ -118,11 +118,11 @@ section {
     font-weight: bold;
     text-decoration: none;
     transition: background 0.2s;
-    cursor: pointer;
 }
 .button:hover {
     background: #ffd366;
     color: #000;
+    cursor: url('/images/cursor-hover.png'), auto;
 }
 
 .events ul {
