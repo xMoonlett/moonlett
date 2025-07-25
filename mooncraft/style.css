@@ -15,6 +15,9 @@ html, body, * {
 body a {
     color: #ca6fff
 }
+body a {
+    cursor: url('/images/cursor-hover.png'), auto;
+}
 
 .logo {
     display: inline-block;
