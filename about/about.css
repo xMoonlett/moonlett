@@ -48,7 +48,6 @@
 .about-links .links a:hover {
   background-color: #8000ff;
   color: rgb(255, 255, 255);
-  transform: scale(1.1);
   transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -58,6 +57,13 @@
 .about-links i img {
     height: 25px;
     width: 25px;
+}
+.mc-img {
+  top: 23px;
+  right: -12px;
+  position: fixed;
+  height: 35px;
+  width: 35px;
 }
 
 .about-text p {
