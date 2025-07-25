@@ -55,21 +55,19 @@ header h1 {
     margin: 0;
 }
 
-.status {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    margin: 20px;
-}
-
 .container a {
     text-decoration: none;
 }
 
-.container a:hover {
+h1 {
     cursor: url('/images/cursor-hover.png'), auto;
 }
-
+a img {
+  cursor: url('/images/cursor-hover.png'), auto;
+}
+a:hover {
+    cursor: url('/images/cursor-hover.png'), auto;
+}
 .nav {
     display: flex;
     justify-content: center;
