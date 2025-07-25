@@ -13,7 +13,8 @@ html, body, * {
 }
 
 body a {
-    color: #ca6fff
+    color: #ca6fff;
+    cursor: pointer;
 }
 body a {
     cursor: url('/images/cursor-hover.png'), auto;
@@ -28,6 +29,7 @@ body a {
     font-weight: bold;
     color: #ca6fff;
     text-shadow: 0 2px 8px #222;
+    cursor: pointer;
 }
 .logo img {
     position: absolute;
@@ -65,6 +67,7 @@ header h1 {
 
 .container a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 .nav {
@@ -91,6 +94,7 @@ nav ul li a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+    cursor: pointer;
 }
 nav ul li a:hover {
     color: #000000ad;
@@ -114,6 +118,7 @@ section {
     font-weight: bold;
     text-decoration: none;
     transition: background 0.2s;
+    cursor: pointer;
 }
 .button:hover {
     background: #ffd366;
