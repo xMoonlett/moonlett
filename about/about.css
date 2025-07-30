@@ -1,6 +1,6 @@
 .about-links .links {
   position: relative;
-  top: 200px;
+  top: 215px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -60,13 +60,13 @@
 }
 .mc-img {
   top: 23px;
-  right: -12px;
+  right: -12.3px;
   position: fixed;
   height: 35px;
   width: 35px;
 }
 
-.about-text p {
+.about-box1 p, .about-box2 p  {
     background: #2d2d2d80;
     border: 1px solid #7f6597;
     padding: 10px;
@@ -76,16 +76,67 @@
     display: flex;
     font-size: 16px;
     font-weight: bold;
+    text-wrap: wrap;
 }
-
-.about-text {
-    top: 250px;
-    left: 50%;
-    transform: translateX(-50%);
+.about-box1 {
     position: fixed;
+    left: 50%;
+    top: 150px;
+    transform: translateX(-50%);
+    display: inline;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
     -o-transform: translateX(-50%);
     text-wrap: nowrap;
+}
+.about-box2 {
+    position: fixed;
+    left: 50%;
+    top: 260px;
+    width: 525px;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    text-wrap: nowrap;
+}
+@media (max-width: 520px) {
+  .about-box2 {
+    position: fixed;
+    left: 50%;
+    top: 260px;
+    max-width: 440px;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    text-wrap: nowrap;
+  }
+}
+
+.about-text {
+    background: #2d2d2d80;
+    border: 1px solid #7f6597;
+    color: white;
+    font-size: 16px;
+    font-weight: normal !important;
+    text-align: center;
+}
+
+.about-text a {
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #9090ff, #a36eff, #ff9aff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+}
+
+.about-text a:hover {
+    cursor: url('/images/cursor-hover.png'), auto;
 }
