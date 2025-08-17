@@ -1,63 +1,950 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/png" href="images/moon.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Moonlett</title>
+    <link rel="icon" type="image/png" href="images/moon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo:wght@500;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #0f1625;
+            --border: #ff9aff31;
+            --glow: #ff9aff;
+            --fg: #d5d9e0;
+            --muted: #8b93a1;
+            --accent-1: #9090ff;
+            --accent-2: #a36eff;
+            --accent-3: #ff9aff;
+        }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font: 14px/1.45 "Exo", ui-sans-serif, system-ui;
+            user-select: none;
+        }
 
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="nav.css">
-    <link rel="stylesheet" href="stars.css">
+        /* Cursor */
+        html,
+        body,
+        * {
+            cursor: url('/images/cursor.png') 0 0, auto;
+        }
+
+        a,
+        button,
+        .desktop-icon img,
+        .desktop-icon .imgWrap,
+        .task,
+        .start,
+        .controls button,
+        .menu .item {
+            cursor: url('/images/cursor-hover.png') 0 0, pointer;
+        }
+
+        /* Wallpaper */
+        #desktop {
+            position: fixed;
+            inset: 0 0 40px 0;
+            overflow: hidden;
+            background:
+                radial-gradient(1200px 800px at 10% -10%, rgba(34, 211, 238, .06), transparent 60%),
+                radial-gradient(1000px 900px at 90% 120%, rgba(255, 154, 255, .08), transparent 60%),
+                linear-gradient(180deg, #0b0f14, #0a0e16 60%, #0b0f14);
+        }
+
+        #desktop::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .14;
+            background: repeating-linear-gradient(0deg, #f67ffc, #82defc 1px, #82defc 2px, #f67ffc 3px, transparent 4px);
+            animation: scan .7s linear infinite;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes scan {
+            0% {
+                background-position: 0 0
+            }
+
+            100% {
+                background-position: 0 2px
+            }
+        }
+
+        /* Desktop grid (you'll add your own item images; planets stay background only) */
+        .desktop {
+            position: absolute;
+            inset: 0;
+            padding: 18px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 96px);
+            gap: 14px;
+            align-content: start;
+        }
+
+        .desktop-icon {
+            width: 96px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .desktop-icon .imgWrap {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 6px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: #0e1524;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .desktop-icon img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .desktop-icon .label {
+            font: 12px/1.3 ui-sans-serif, system-ui;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .desktop-icon:hover .imgWrap {
+            outline: 1px solid var(--glow);
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            height: 40px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(17, 24, 38, .85);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 8px;
+            backdrop-filter: blur(6px);
+        }
+
+        .start {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 8px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .start:hover {
+            background: #9090ff86;
+        }
+
+        .start * {
+            pointer-events: none;
+        }
+
+        .start .label {
+            background: white;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .start img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .tasks {
+            display: flex;
+            gap: 6px;
+            flex: 1;
+            overflow: auto;
+        }
+
+        .task {
+            max-width: 260px;
+            min-width: 160px;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 0;
+            background: #0f1625;
+            display: flex;
+            align-items: center;
+        }
+
+        .task .title {
+            flex: 1;
+            padding: 6px 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .task button {
+            width: 28px;
+            height: 28px;
+            border: 0;
+            border-left: 1px solid var(--border);
+            background: #10192b;
+            color: var(--fg);
+        }
+
+        .task button:hover {
+            background: #2c3342;
+        }
+
+        .task.active {
+            border: 1px solid var(--glow);
+        }
+
+        .clock {
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+            padding: 0 6px;
+            border: 1px solid #ff9aff8e;
+            padding: 5px 5px;
+        }
+
+        /* Start menu */
+        .menu {
+            position: fixed;
+            bottom: 48px;
+            left: 8px;
+            width: 280px;
+            background: var(--panel);
+            border: 1px solid var(--glow);
+            border-radius: 0;
+            display: none;
+            overflow: hidden;
+        }
+
+        .menu .item {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu .item:last-child {
+            border-bottom: 0;
+        }
+
+        .menu .item:hover {
+            background: #9090ff86;
+        }
+
+        /* Windows */
+        .win {
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            width: 560px;
+            min-width: 320px;
+            height: 380px;
+            min-height: 220px;
+            background: rgba(0, 0, 0, 0.459);
+            border: 1px solid var(--border);
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .win.active {
+            outline: 1px solid var(--glow);
+        }
+
+        .titlebar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 10px;
+            border-bottom: 1px solid var(--border);
+            user-select: none;
+        }
+
+        .title {
+            flex: 1;
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        .controls button {
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--border);
+            background: #0f1625;
+            border-radius: 0;
+            color: var(--fg);
+            font: 700 14px/1.2 "Orbitron", ui-sans-serif, system-ui;
+        }
+
+        .controls button:hover {
+            background: #142034;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            overflow: auto;
+        }
+
+        .pad {
+            padding: 12px;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        /* Terminal */
+        .term {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .term pre {
+            flex: 1;
+            margin: 0;
+            padding: 12px;
+            font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: #c9d1d9;
+            background: #0a0e16;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            user-select: text;
+        }
+
+        .term input {
+            padding: 10px 12px;
+            background: #0b0f14;
+            color: var(--fg);
+            border: 1px solid var(--border);
+            border-width: 1px 0 0 0;
+            outline: none;
+            cursor: text;
+        }
+
+        /* About Me */
+        .about {
+            width: 100%;
+            background: #0b0f14;
+            color: var(--fg);
+            text-align: center;
+        }
+
+        .about h1 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .about a {
+            color: var(--accent-1);
+        }
+
+        /* Boss Fight */
+        .bf {
+            width: 100%;
+            background: #111520;
+            color: #e9ecf1;
+            padding: 10px;
+        }
+
+        .bf-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px
+        }
+
+        .bf-small {
+            margin-top: 6px
+        }
+
+        .bf-name {
+            font-weight: 700
+        }
+
+        .bf-meta {
+            opacity: .8
+        }
+
+        .bf-bar {
+            height: 10px;
+            background: #1c2233;
+            overflow: hidden;
+            margin: 6px 0
+        }
+
+        .bf-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #6cf, #9f6);
+            transition: width .12s
+        }
+
+        .bf-actions {
+            display: flex;
+            gap: 8px
+        }
+
+        .bf-hit-wrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        .bf-btn-big {
+            font-size: 2rem;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #6cf, #9f6);
+            color: #081018;
+            transition: transform 0.1s ease;
+        }
+
+        .bf-btn-big:active {
+            transform: scale(0.95);
+        }
+
+        .bf-global-clicks {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .bf-btn {
+            border: 0;
+            background: #6cf;
+            color: #081018;
+            padding: 8px 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 0 auto;
+            display: block;
+            width: fit-content;
+        }
+
+        .bf-btn:hover {
+            cursor: url('/images/cursor-hover.png') 0 0, pointer;
+        }
+
+        .bf-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed
+        }
+
+        .bf-btn-secondary {
+            margin-top: 150px;
+        }
+
+        .bf-log {
+            min-height: 1.2em;
+            opacity: .85;
+            margin-top: 0px
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            .bf-fill {
+                transition: none
+            }
+        }
+
+        /* Boot splash */
+        .boot {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+        }
+
+        .boot .logo {
+            font-weight: 800;
+            letter-spacing: .5px;
+            font-size: 22px;
+        }
+
+        .pulse {
+            height: 3px;
+            width: 160px;
+            background: linear-gradient(90deg, transparent, var(--glow), transparent);
+            animation: pulse 1.2s infinite;
+            margin: 16px auto;
+            border-radius: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateX(-80px)
+            }
+
+            50% {
+                transform: translateX(80px)
+            }
+
+            100% {
+                transform: translateX(-80px)
+            }
+        }
+
+        @media (max-width: 720px) {
+            .desktop {
+                grid-template-columns: repeat(3, 96px);
+            }
+
+            .win {
+                left: 6px !important;
+                right: 6px;
+                width: calc(100% - 12px) !important;
+                height: 60vh !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <nav>
-        <a href="">
-            <img src="images/moon.png" alt="Moon">
-            <h1 class="gradient-text">Moonlett</h1>
-        </a>
-        <ul class="gradient-text">
-            <li><a href="https://craft.moonlett.com/" target="_blank" rel="noopener noreferrer">MoonCraft</a></li>
-            <li><a href="https://moonlett.com/art-gallery/">Art Gallery</a></li>
-            <li><a href="https://moonlett.com/about/">About</a></li>
-        </ul>
-    </nav>
-    
-    <img src="images/moon2.png" class="floater" style="left:25%; top: 100px">
-    <img src="images/neptune.png" class="floater" style="left:65%; top: 120px">
-    <img src="images/mars.png" class="floater" style="left:37%; top: 760px">
-    <img src="images/jupiter.png" class="floater" style="left:46%; top: 498px;">
-    <img src="images/venus.png" class="floater" style="left: 28%; top: 400px;">
-    <img src="images/earth.png" class="floater" style="left: 13%; top: 298px">
-    <img src="images/saturn.png" class="floater" style="left: 91%; top: 654px">
-    <img src="images/mercury.png" class="floater" style="left: 5%; top: 721px;">
-    <img src="images/uranus.png" class="floater" style="left: 77%; top: 386px;">
-    <img src="images/pluto.png" class="floater" style="left: 64%; top: 643px;">
-    <img src="images/sun.png" class="floater" style="left:87%; top: 100px">
+    <div id="desktop">
+        <div class="desktop" id="desktopIcons"></div>
+    </div>
 
-    <img src="images/star.png" class="floater" style="left:34%; top: 194px;">
-    <img src="images/star2.png" class="floater" style="left:87%; top: 350px;">
-    <img src="images/star3.png" class="floater" style="left:15%; top: 490px;">
-    <img src="images/star4.png" class="floater" style="left:75%; top: 563px;">
-    <img src="images/star5.png" class="floater" style="left:54%; top: 754px;">
+    <div class="taskbar">
+        <div class="start" id="startBtn"><img src="images/moon.png" alt="Start"></div>
+        <div class="tasks" id="tasks"></div>
+        <div class="clock" id="clock"></div>
+    </div>
+    <div class="menu" id="menu"></div>
 
-    <a href="https://youtu.be/rlkSMp7iz6c?si=R0j82LRl4EVugbh-" target="_blank" rel="noopener noreferrer">
-        <img src="images/404.png" class="floater" style="left: 76%; top: 732px;">
-    </a>
-    <a href="https://www.youtube.com/shorts/8iUbBcrQehY" target="_blank" rel="noopener noreferrer">
-       <img src="images/404.png" class="floater" style="left: 55%; top: 406px;">
-    </a>
+    <div class="boot" id="boot">
+        <div class="boot-inner" style="text-align:center">
+            <div class="logo"><span
+                    style="background:linear-gradient(90deg,var(--accent-1),var(--accent-2),var(--accent-3));-webkit-background-clip:text;background-clip:text;color:transparent">MoonOS</span>
+            </div>
+            <div class="muted">booting NewMoonOS…</div>
+            <div class="pulse"></div>
+        </div>
+    </div>
 
-    <div class="stars"></div>
+    <script type="module">
+        const bus = new EventTarget();
 
-    <script src="stars.js"></script>
-    <script src="cursor.js"></script>
+        /* ===== Desktop items ================================================ */
+        const ICONS = [
+            { img: "images/moonterminal.png", label: "Terminal", action: () => PROC.spawn("Terminal", APPS.Terminal) },
+            { img: "images/mooncraft.png", label: "MoonCraft", action: () => window.open("https://craft.moonlett.com/", "_blank") },
+            { img: "images/about.png", label: "About", action: () => PROC.spawn("About", APPS.About) },
+            { img: "images/bossfight.png", label: "Boss Fights", action: () => PROC.spawn("Boss Fights", APPS.BossFights) },
+            { img: "images/404.png", label: "Corrupted File", action: () => window.open("https://youtu.be/rlkSMp7iz6c?si=R0j82LRl4EVugbh-", "_blank") },
+            { img: "images/404.png", label: "Corrupted File", action: () => window.open("https://www.youtube.com/shorts/8iUbBcrQehY", "_blank") },
+        ];
+
+        /* ===== Process/Window manager ======================================= */
+        const PROC = (() => {
+            let nextPid = 1; const table = new Map();
+            const list = () => [...table.values()];
+            function spawn(name, fn) {
+                const pid = nextPid++;
+                const element = WM.createWindow({
+                    title: name, pid,
+                    onClose: () => kill(pid), onFocus: () => focus(pid)
+                });
+                const proc = { pid, name, element };
+                table.set(pid, proc);
+                TASKBAR.add(proc, () => focus(pid), () => kill(pid));
+                focus(pid);
+                try { const teardown = fn({ pid }, element.querySelector('.content')); proc.kill = teardown || (() => { }); }
+                catch (e) { console.error(e); }
+                return pid;
+            }
+            function kill(pid) { const p = table.get(pid); if (!p) return; try { p.kill?.(); } catch { } WM.destroy(p.element); TASKBAR.remove(pid); table.delete(pid); }
+            function focus(pid) { const p = table.get(pid); if (!p) return; WM.focus(p.element); TASKBAR.activate(pid); }
+            function toggleMinimize(pid) { const p = table.get(pid); if (!p) return; const el = p.element; if (el.style.display === 'none') { el.style.display = 'flex'; focus(pid); } else { el.style.display = 'none'; TASKBAR.activate(pid); } }
+            return { spawn, kill, focus, toggleMinimize, list };
+        })();
+
+        const WM = (() => {
+            const desktop = document.getElementById('desktop');
+            let z = 10;
+
+            function createWindow({ title, pid, onClose, onFocus }) {
+                const el = document.createElement('div');
+                el.className = 'win';
+                el.style.zIndex = ++z;
+                el.innerHTML = `
+  <div class="titlebar" data-drag>
+    <div class="title">${title}</div>
+    <div class="controls">
+      <button type="button" data-min title="Minimize">—</button>
+      <button type="button" data-close title="Close">×</button>
+    </div>
+  </div>
+  <div class="content"></div>
+  <div class="handle" title="Resize"></div>`;
+
+                desktop.appendChild(el);
+
+                // ----- Drag Window -----
+                const bar = el.querySelector('[data-drag]');
+                let drag = null;
+
+                bar.addEventListener('pointerdown', (e) => {
+                    if (e.button !== 0) return;
+                    if (e.target.closest('.controls')) return;
+                    drag = { dx: e.clientX - el.offsetLeft, dy: e.clientY - el.offsetTop };
+                    bar.setPointerCapture(e.pointerId);
+                    onFocus?.();
+                    focus(el);
+                });
+
+                bar.addEventListener('pointermove', (e) => {
+                    if (!drag) return;
+                    el.style.left = Math.max(0, e.clientX - drag.dx) + 'px';
+                    el.style.top = Math.max(0, e.clientY - drag.dy) + 'px';
+                });
+
+                bar.addEventListener('pointerup', () => (drag = null));
+
+                // ----- Resize (removed but keeping) -----
+                const handle = el.querySelector('.handle');
+                let rz = null;
+
+                handle.addEventListener('pointerdown', (e) => {
+                    const r = el.getBoundingClientRect();
+                    rz = { w: r.width, h: r.height, x: e.clientX, y: e.clientY };
+                    handle.setPointerCapture(e.pointerId);
+                });
+
+                handle.addEventListener('pointermove', (e) => {
+                    if (!rz) return;
+                    el.style.width = Math.max(320, rz.w + (e.clientX - rz.x)) + 'px';
+                    el.style.height = Math.max(220, rz.h + (e.clientY - rz.y)) + 'px';
+                });
+
+                handle.addEventListener('pointerup', () => (rz = null));
+
+                // ----- Controls -----
+                const closeBtn = el.querySelector('[data-close]');
+                const minBtn = el.querySelector('[data-min]');
+
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    onClose?.();
+                });
+
+                minBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    el.style.display = 'none';
+                });
+
+                el.addEventListener('mousedown', () => {
+                    focus(el);
+                    onFocus?.();
+                });
+
+                return el;
+            }
+
+            function focus(el) {
+                document.querySelectorAll('.win').forEach((w) => w.classList.remove('active'));
+                el.classList.add('active');
+                el.style.display = 'flex';
+                el.style.zIndex = ++z;
+            }
+
+            function destroy(el) {
+                el?.remove();
+            }
+
+            return { createWindow, focus, destroy };
+        })();
+
+        /* ===== Taskbar / Start ================================================ */
+        const TASKBAR = (() => {
+            const tasks = document.getElementById('tasks');
+            const btns = new Map();
+
+            function add(proc, onFocus, onClose) {
+                const b = document.createElement('div');
+                b.className = 'task';
+                b.innerHTML = `
+      <div class="title">${proc.name}</div>
+      <button data-close title="Close">×</button>
+    `;
+
+                b.onclick = () => onFocus();
+
+                b.querySelector('[data-close]').onclick = (e) => { e.stopPropagation(); onClose(); };
+
+                tasks.appendChild(b);
+                btns.set(proc.pid, b);
+            }
+
+            function remove(pid) {
+                btns.get(pid)?.remove();
+                btns.delete(pid);
+            }
+
+            function activate(pid) {
+                [...btns.values()].forEach(x => x.classList.remove('active'));
+                btns.get(pid)?.classList.add('active');
+            }
+
+            return { add, remove, activate };
+        })();
+
+        // 12-hour clock
+        (function clock() {
+            const el = document.getElementById('clock');
+            setInterval(() => { el.textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true }); }, 500);
+        })();
+
+        /* ===== Apps ============================================================ */
+        const APPS = {};
+
+        APPS.Terminal = function (api, root) {
+            root.innerHTML = `<div class="term"><pre id="out"></pre><input id="in" placeholder="user:/ $" autocomplete="off"/></div>`;
+            const $out = root.querySelector('#out'); const $in = root.querySelector('#in');
+            function print(s = '') { $out.textContent += s + '\n'; $out.scrollTop = $out.scrollHeight; }
+            const routes = {
+                mooncraft: () => window.open('https://craft.moonlett.com/', '_blank'),
+                about: () => PROC.spawn('About', APPS.About),
+                boss: () => window.open('/boss', '_self'),
+                a: () => window.open('https://youtu.be/rlkSMp7iz6c?si=R0j82LRl4EVugbh-', '_blank'),
+                b: () => window.open('https://www.youtube.com/shorts/8iUbBcrQehY', '_blank'),
+            };
+            const helpText = `commands:\n  MoonCraft    open craft.moonlett.com\n  About        open about\n `;
+            function run(line) {
+                const [cmd] = line.trim().split(/\s+/);
+                if (!cmd) return;
+                if (cmd === 'help') { print(helpText); return; }
+                if (cmd === 'clear') { $out.textContent = ''; return; }
+                const fn = routes[cmd.toLowerCase()];
+                if (fn) { fn(); print(`opening ${cmd}...`); }
+                else { print(`unknown: ${cmd} (type 'help')`); }
+            }
+            print("MoonTerminal — type 'help' for shortcuts.");
+            $in.addEventListener('keydown', e => { if (e.key === 'Enter') { print(`$ ${$in.value}`); run($in.value); $in.value = ''; } });
+            return () => { };
+        };
+
+        APPS.About = function (api, root) {
+            root.innerHTML = `
+    <div class="about">
+      <h1>About Me</h1>
+            You can call me Moonlett(or Moon)<br>
+            I play games, do stuff and play around with web coding for fun<br>
+            Sometimes i dont sleep lol<br>
+            Currently making a Minecraft Server called <a href="https://craft.moonlett.com" target="_blank">MoonCraft</a>.
+    </div>`;
+            return () => { };
+        };
+
+        APPS.BossFights = function (_api, root) {
+            const BOSS_KEY = "moon_boss_v1";
+            const META_KEY = "moon_boss_meta_v1"; // holds globalClicks
+            const chan = "moon_boss_channel";
+            const bc = "BroadcastChannel" in window ? new BroadcastChannel(chan) : null;
+
+            root.innerHTML = `
+    <div class="bf">
+      <div class="bf-row">
+        <div class="bf-name" id="bf-name">Boss</div>
+        <div class="bf-log" id="bf-log"></div>
+        <div class="bf-meta"><span id="bf-level">Level 1</span></div>
+      </div>
+      <div class="bf-bar" aria-label="HP"><div class="bf-fill" id="bf-fill"></div></div>
+<div class="bf-row bf-small">
+  <div><span id="bf-hp">0</span>/<span id="bf-max">0</span> HP • Clicks: <span id="bf-clicks">0</span></div>
+</div>
+<div class="bf-hit-wrap">
+  <button id="bf-hit" class="bf-btn bf-btn-big">HIT</button>
+</div>
+      <div class="bf-global-clicks" id="bf-global-clicks">Global Clicks: 0</div>
+      <button id="bf-reset" class="bf-btn bf-btn-secondary" title="Reset everything">Reset All</button>
+    </div>
+  `;
+
+            const $ = s => root.querySelector(s);
+            const el = {
+                name: $("#bf-name"),
+                level: $("#bf-level"),
+                hp: $("#bf-hp"),
+                max: $("#bf-max"),
+                clicks: $("#bf-clicks"),
+                globalClicks: $("#bf-global-clicks"),
+                fill: $("#bf-fill"),
+                hit: $("#bf-hit"),
+                reset: $("#bf-reset"),
+                log: $("#bf-log"),
+            };
+
+            // ---- State helpers ----
+            const NAMES = ["Hydra", "Chimera", "Juggernaut", "Abomination", "Kraken", "Revenant", "Goblin", "Ogre"];
+            const hpForLevel = (lvl) => {
+                if (lvl === 1) return 100;       // L1: 100
+                if (lvl === 2) return 250;       // L2: 250
+                return Math.floor(250 * Math.pow(1.35, lvl - 2)); // L3+: scale from L2
+            };
+            const freshBoss = (lvl) => {
+                const max = hpForLevel(lvl);
+                return {
+                    name: NAMES[(lvl - 1) % NAMES.length],
+                    level: lvl,
+                    maxHp: max,
+                    hp: max,
+                    totalClicks: 0,
+                    lastKillAt: null,
+                    createdAt: Date.now()
+                };
+            };
+            const readBoss = () => {
+                try { return JSON.parse(localStorage.getItem(BOSS_KEY)) || freshBoss(1); }
+                catch { return freshBoss(1); }
+            };
+            const writeBoss = (b) => localStorage.setItem(BOSS_KEY, JSON.stringify(b));
+
+            const readMeta = () => {
+                try { return JSON.parse(localStorage.getItem(META_KEY)) || { globalClicks: 0 }; }
+                catch { return { globalClicks: 0 }; }
+            };
+            const writeMeta = (m) => localStorage.setItem(META_KEY, JSON.stringify(m));
+
+            const render = (b, m) => {
+                el.name.textContent = b.name;
+                el.level.textContent = "Level " + b.level;
+                el.hp.textContent = b.hp.toLocaleString();
+                el.max.textContent = b.maxHp.toLocaleString();
+                el.clicks.textContent = b.totalClicks.toLocaleString();
+                el.fill.style.width = Math.max(0, Math.min(100, 100 * b.hp / b.maxHp)) + "%";
+                el.globalClicks.textContent = "Global Clicks: " + (m.globalClicks || 0).toLocaleString();
+            };
+
+            const syncOut = (b, m, type = "boss") => {
+                writeBoss(b); writeMeta(m);
+                bc && bc.postMessage({ type, boss: b, meta: m });
+            };
+
+            // ---- Init / Sync ----
+            let boss = readBoss();
+            let meta = readMeta();
+            writeBoss(boss); writeMeta(meta);
+            render(boss, meta);
+
+            bc && bc.addEventListener("message", e => {
+                if (!e?.data) return;
+                if (e.data.boss) boss = e.data.boss;
+                if (e.data.meta) meta = e.data.meta;
+                render(boss, meta);
+            });
+            window.addEventListener("storage", e => {
+                if (e.key === BOSS_KEY && e.newValue) boss = JSON.parse(e.newValue);
+                if (e.key === META_KEY && e.newValue) meta = JSON.parse(e.newValue);
+                render(boss, meta);
+            });
+
+            // ---- Hit logic ----
+            let lastHitAt = 0;
+            const doHit = () => {
+                const now = performance.now();
+                if (now - lastHitAt < 80) return; // debounce
+                lastHitAt = now;
+
+                // crits
+                const r = Math.random();
+                let mult = 1;
+                if (r < 0.01) mult = 10;
+                else if (r < 0.06) mult = 5;
+                else if (r < 0.16) mult = 2;
+
+                boss = readBoss(); meta = readMeta();
+                boss.hp = Math.max(0, boss.hp - mult);
+                boss.totalClicks += 1;
+                meta.globalClicks = (meta.globalClicks || 0) + 1;
+
+                let msg = mult > 1 ? `CRIT ×${mult}! -${mult} HP` : `-${mult} HP`;
+
+                if (boss.hp === 0) {
+                    boss.lastKillAt = Date.now();
+                    msg += " — Boss down!";
+                    const next = freshBoss(boss.level + 1);
+                    // Save death moment, then respawn
+                    syncOut(boss, meta, "death");
+                    setTimeout(() => { boss = next; syncOut(boss, meta, "spawn"); render(boss, meta); }, 250);
+                } else {
+                    syncOut(boss, meta, "hit");
+                }
+
+                el.log.textContent = msg;
+                render(boss, meta);
+            };
+
+            // ---- Reset All (Level 1, 100 HP, clicks zeroed) ----
+            const doResetAll = () => {
+                boss = freshBoss(1);
+                meta = { globalClicks: 0 };
+                syncOut(boss, meta, "reset-all");
+                el.log.textContent = "All stats reset. Back to Level 1.";
+                render(boss, meta);
+            };
+
+            el.hit.addEventListener("click", doHit);
+            el.reset.addEventListener("click", doResetAll);
+
+            return () => { bc && bc.close?.(); };
+        };
+
+        /* ===== Desktop icons render =========================================== */
+        (function renderIcons() {
+            const host = document.getElementById('desktopIcons');
+            ICONS.forEach(ic => {
+                const el = document.createElement('div'); el.className = 'desktop-icon';
+                el.innerHTML = `<div class="imgWrap"><img src="${ic.img}" alt=""/></div><div class="label">${ic.label}</div>`;
+                el.addEventListener('dblclick', ic.action);
+                el.addEventListener('keydown', e => { if (e.key === 'Enter') ic.action(); });
+                el.tabIndex = 0; host.appendChild(el);
+            });
+        })();
+
+        /* ===== Start menu =============================== */
+        (function startMenu() {
+            const menu = document.getElementById('menu'); const startBtn = document.getElementById('startBtn');
+            const items = [
+                { name: 'Terminal', action: () => PROC.spawn('Terminal', APPS.Terminal) },
+                { name: 'MoonCraft', action: () => window.open('https://craft.moonlett.com/', '_blank') },
+                { name: 'About', action: () => PROC.spawn('About', APPS.About) },
+            ];
+            menu.innerHTML = items.map(i => `<div class="item">${i.name}</div>`).join('');
+            menu.querySelectorAll('.item').forEach((el, i) => el.onclick = () => { items[i].action(); menu.style.display = 'none'; });
+            startBtn.onclick = () => menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            window.addEventListener('click', e => { if (!menu.contains(e.target) && e.target !== startBtn) { menu.style.display = 'none'; } });
+        })();
+
+        /* ===== Boot ============================================================ */
+        (function boot() { setTimeout(() => { document.getElementById('boot').style.display = 'none'; }, 1000); })();
+    </script>
 </body>
 
 </html>
