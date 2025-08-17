@@ -732,11 +732,10 @@
             const routes = {
                 mooncraft: () => window.open('https://craft.moonlett.com/', '_blank'),
                 about: () => PROC.spawn('About', APPS.About),
-                boss: () => window.open('/boss', '_self'),
-                a: () => window.open('https://youtu.be/rlkSMp7iz6c?si=R0j82LRl4EVugbh-', '_blank'),
-                b: () => window.open('https://www.youtube.com/shorts/8iUbBcrQehY', '_blank'),
+                boss: () => PROC.spawn('BossFights', APPS.BossFights),
+                discord: () => window.open('https://discord.moonlett.com/', '_blank'),
             };
-            const helpText = `commands:\n  MoonCraft    open craft.moonlett.com\n  About        open about\n `;
+            const helpText = `commands:\n  MoonCraft    open craft.moonlett.com\n  About        open about\n  Boss         open boss fights\n  Discord      open Moonlett Discord`;
             function run(line) {
                 const [cmd] = line.trim().split(/\s+/);
                 if (!cmd) return;
@@ -936,6 +935,8 @@
                 { name: 'Terminal', action: () => PROC.spawn('Terminal', APPS.Terminal) },
                 { name: 'MoonCraft', action: () => window.open('https://craft.moonlett.com/', '_blank') },
                 { name: 'About', action: () => PROC.spawn('About', APPS.About) },
+                { name: 'Boss Fights', action: () => PROC.spawn('Boss Fights', APPS.BossFights) },
+                { name: 'Discord', action: () => window.open('https://discord.moonlett.com/', '_blank') },
             ];
             menu.innerHTML = items.map(i => `<div class="item">${i.name}</div>`).join('');
             menu.querySelectorAll('.item').forEach((el, i) => el.onclick = () => { items[i].action(); menu.style.display = 'none'; });
