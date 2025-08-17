@@ -735,7 +735,7 @@
                 boss: () => PROC.spawn('BossFights', APPS.BossFights),
                 discord: () => window.open('https://discord.moonlett.com/', '_blank'),
             };
-            const helpText = `commands:\n  MoonCraft    open craft.moonlett.com\n  About        open about\n  Boss         open boss fights\n  Discord      open Moonlett Discord`;
+            const helpText = `commands:\n  MoonCraft    open craft.moonlett.com\n  About        open about\n  Boss         open boss fights\n  Discord      open discord.moonlett.com`;
             function run(line) {
                 const [cmd] = line.trim().split(/\s+/);
                 if (!cmd) return;
