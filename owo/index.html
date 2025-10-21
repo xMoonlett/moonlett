@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="/img/owo.png"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <title>OwO</title>
+
+  <style>
+    #owo-bg {
+      position: fixed; inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+      background: #0f0f1a;
+    }
+
+    .owo-float {
+      position: absolute;
+      opacity: 0.14;
+      filter: blur(0.8px) brightness(1.3);
+      will-change: transform;
+      animation: drift var(--dur, 14s) ease-in-out var(--delay, 0s) infinite alternate;
+    }
+
+    @keyframes drift {
+      0%   { transform: translate(0, 0) rotate(0deg) }
+      50%  { transform: translate(var(--dx, 25px), var(--dy, -18px)) rotate(3deg) }
+      100% { transform: translate(0, 0) rotate(0deg) }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .owo-float { animation: none; }
+    }
+
+    main, canvas, p { position: relative; z-index: 10; }
+  </style>
+</head>
+<body>
+  <div id="owo-bg" aria-hidden="true"></div>
+
+  <!-- your canvas glitch image -->
+  <canvas id="owoCanvas" width="300" height="300"
+          style="display:block;margin:100px auto;"></canvas>
+  <p style="text-align:center; background: none;"></p>
+
+  <script>
+    const baseImg = new Image();
+    baseImg.src = "/img/owobig.png";
+    baseImg.onload = () => startGlitch(baseImg);
+
+    function startGlitch(image) {
+      const c = document.getElementById("owoCanvas");
+      const ctx = c.getContext("2d");
+      c.width = image.width;
+      c.height = image.height;
+
+      function draw() {
+        ctx.drawImage(image, 0, 0);
+        for (let i = 0; i < 5; i++) {
+          const y = Math.random() * c.height;
+          const h = Math.random() * 10 + 5;
+          const offset = (Math.random() - 0.5) * 20;
+          ctx.drawImage(c, 0, y, c.width, h, offset, y, c.width, h);
+        }
+        if (Math.random() < 0.3) {
+          ctx.globalAlpha = 0.1;
+          ctx.fillStyle = ["red", "blue", "lime"][Math.floor(Math.random() * 3)];
+          ctx.fillRect(0, 0, c.width, c.height);
+          ctx.globalAlpha = 1;
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    const container = document.getElementById("owo-bg");
+    const NUM_IMAGES = 25;
+    const SRC = "/img/owobig.png";
+
+    for (let i = 0; i < NUM_IMAGES; i++) {
+      const img = document.createElement("img");
+      img.src = SRC;
+      img.alt = "";
+      img.decoding = "async";
+      img.loading = "lazy";
+      img.className = "owo-float";
+
+      img.style.left = (Math.random() * 100) + "vw";
+      img.style.top = (Math.random() * 100) + "vh";
+      img.style.width = (80 + Math.random() * 120) + "px";
+      img.style.background = "transparent";
+
+      img.style.setProperty("--dx",  (Math.random() * 80 - 40) + "px");
+      img.style.setProperty("--dy",  (Math.random() * 80 - 40) + "px");
+      img.style.setProperty("--dur", (10 + Math.random() * 12) + "s");
+      img.style.setProperty("--delay", (Math.random() * 4) + "s");
+
+      container.appendChild(img);
+    }
+  </script>
+</body>
+</html>

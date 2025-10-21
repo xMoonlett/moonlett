@@ -1,0 +1,128 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background: #1c1c1c;
+    color: white;
+    font: bold 1rem 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+    padding: 1rem;
+    border-bottom: 1px solid #444;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+header a {
+    color: #d3d3ff;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.hback {
+    justify-self: start;
+}
+.hheader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1;
+}
+.hheader h1 {
+    margin: 0;
+    color: #d3d3ff;
+    background: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: -webkit-transform 0.3s ease;
+    -moz-transition: -moz-transform 0.3s ease;
+    -o-transition: -o-transform 0.3s ease;
+    transition: transform 0.3s ease;
+}
+.hheader a {
+    font-size: 1.3rem;
+    cursor: url("/img/owo.png") 4 4, auto;
+}
+.hheader h1:hover {
+    color: #d3d3ffb4;
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+
+  transform: scale(1.1) rotate(3deg);
+}
+.home img {
+    display: block;
+    
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+.searchbar {
+    margin-right: 10px;
+}
+.searchbar input {
+    width: 125px;
+    border: #d3d3ff 1px solid;
+    padding: 5px;
+}
+.searchbar input:hover {
+    background: #333;
+}
+.searchbar input::placeholder {
+    color: #d3d3ff;
+    font-weight: normal;
+}
+.searchbar input:focus {
+    outline: none;
+}
+.hnav {
+    border: #d3d3ff 1px solid;
+    padding: 5px;
+    border-top: none;
+    border-bottom: none;
+}
+.hnav ul {
+    list-style: none;
+    display: flex;
+    gap: .5rem;
+    justify-content: end;
+}
+.hnav ul li {
+    margin: 0;
+}
+.hnav ul li a {
+    padding: 0.25rem 0.5rem;
+}
+.hnav ul li a:hover {
+    background: #d3d3ff;
+    color: black;
+    transition: background 0.3s ease;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 1rem;
+    border-top: 1px solid #444;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #888;
+    width: 100%;
+    text-align: center;
+}
+footer p {
+    margin: 0;
+}
